@@ -10,8 +10,10 @@ build/
 .env.local
 .env.*.local
 
-# Backend runtime data (PDFs, vector index) — these live on Render's disk
-backend/data/
+# Backend raw PDFs — not the vector index. The index IS committed
+# so the free-tier server can serve answers without a persistent disk.
+backend/data/pdfs/
+backend/data/*.tmp
 
 # Logs
 *.log
