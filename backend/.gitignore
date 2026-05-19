@@ -3,9 +3,10 @@ node_modules/
 .env.local
 .env.*.local
 
-# Local persisted data (PDFs + vector index). On Render this lives on a disk.
-data/
-!data/.gitkeep
+# Raw uploaded PDFs are big — never commit. The vector index (vectors.json)
+# IS committed so the free-tier server can serve answers without a disk.
+data/pdfs/
+data/*.tmp
 
 # Logs
 *.log

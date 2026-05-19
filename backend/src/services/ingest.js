@@ -43,9 +43,14 @@ export async function ingestPdf({ buffer, originalName }) {
   logger.info({ docId, chunks: chunks.length }, 'chunked')
 
   // Persist raw file first so we can recover even if embedding fails mid-way.
-  await fs.mkdir(env.PDF_DIR, { recursive: true })
-  const pdfPath = path.join(env.PDF_DIR, `${docId}.pdf`)
-  await fs.writeFile(pdfPath, buffer)
+  // On read-only filesystems (free tier) this is skipped.
+  try {
+    await fs.mkdir(env.PDF_DIR, { recursive: true })
+    const pdfPath = path.join(env.PDF_DIR, `${docId}.pdf`)
+    await fs.writeFile(pdfPath, buffer)
+  } catch (err) {
+    logger.warn({ err: err.message }, 'skipping raw pdf save (read-only fs)')
+  }
 
   // Embed
   const embeddings = await embedBatch(chunks, 'RETRIEVAL_DOCUMENT')

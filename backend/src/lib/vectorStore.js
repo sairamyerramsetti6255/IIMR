@@ -35,7 +35,13 @@ class VectorStore {
   getDoc(id) { return this.docs.get(id) || null }
 
   async load() {
-    await fs.mkdir(env.PDF_DIR, { recursive: true })
+    // Best-effort directory creation — on Render's free tier the FS is read-only,
+    // and that's fine because we only READ the pre-built vectors.json baked
+    // into the repo. Writes (uploads) will fail with a clear error later.
+    try { await fs.mkdir(env.PDF_DIR, { recursive: true }) } catch (err) {
+      logger.warn({ err: err.message, dir: env.PDF_DIR }, 'pdf dir is read-only — uploads disabled')
+      this.readOnly = true
+    }
     if (!fssync.existsSync(env.INDEX_FILE)) {
       logger.info({ path: env.INDEX_FILE }, 'no vector index yet — starting fresh')
       return
@@ -53,12 +59,17 @@ class VectorStore {
       embedding: new Float32Array(c.embedding),
     }))
     logger.info(
-      { docs: this.docs.size, chunks: this.chunks.length, dim: this.dim },
+      { docs: this.docs.size, chunks: this.chunks.length, dim: this.dim, readOnly: !!this.readOnly },
       'vector index loaded'
     )
   }
 
   async save() {
+    if (this.readOnly) {
+      // Silently no-op so we don't crash a free-tier deployment. The CLI
+      // ingester explicitly clears readOnly before running.
+      return
+    }
     const payload = {
       version: VERSION,
       model: env.GEMINI_EMBED_MODEL,

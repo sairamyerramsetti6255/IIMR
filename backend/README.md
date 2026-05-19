@@ -47,23 +47,58 @@ npm run dev
 - Admin UI:  http://localhost:8080/admin
 - API root:  http://localhost:8080/
 
-Upload some PDFs from the admin page, then ask questions in your React app.
+## Ingest your PDFs (one-time, local)
 
-## Deploy to Render
+We deploy on Render's **free tier**, which doesn't allow persistent disks. To
+get around that we pre-build the vector index locally and commit it to git:
 
-1. Push this repo to GitHub (the `backend/` folder is enough — see `render.yaml`).
-2. In Render → **New → Blueprint** → point at the repo. Render will detect
-   `render.yaml` and create:
-   - a Web Service running `npm start`
-   - a 1 GB persistent disk mounted at `/var/data`
-3. Open the service → **Environment** tab → fill in:
+```bash
+cd backend
+npm install                            # only first time
+npm run ingest:local                   # reads ../IIMR/*.pdf, writes data/vectors.json
+```
+
+The script chunks each PDF, calls Gemini for embeddings, and saves the result
+to `backend/data/vectors.json`. Commit and push it:
+
+```bash
+git add backend/data/vectors.json
+git commit -m "ingest: refresh vector index"
+git push
+```
+
+Render auto-redeploys and the chatbot is instantly grounded in your PDFs.
+To **add or update** PDFs later, drop new ones in `IIMR/`, re-run
+`npm run ingest:local`, and push.
+
+You can also ingest specific files or folders:
+
+```bash
+npm run ingest:local -- ../some-other-folder
+npm run ingest:local -- ./paper1.pdf ./paper2.pdf
+```
+
+## Deploy to Render (free tier)
+
+1. Push this repo to GitHub (you already did).
+2. Render → **+ New → Blueprint** → select your repo.
+3. In the **Blueprint Path** field type: `backend/render.yaml`
+4. Click **Apply**. Render creates one **free** web service — no payment.
+5. Open the service → **Environment** tab → fill in 3 secrets:
    - `GEMINI_API_KEY` — from <https://aistudio.google.com/apikey>
    - `ADMIN_TOKEN` — run `node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"`
-   - `CORS_ORIGIN` — your frontend origin, e.g. `https://your-app.vercel.app`
-4. Wait for deploy. Visit `https://YOUR-SERVICE.onrender.com/admin`, paste your
-   admin token, drop the IIMR PDFs onto the page.
-5. In the React app set `VITE_API_BASE=https://YOUR-SERVICE.onrender.com` and
-   redeploy. The chat widget and `/ask` page will start answering.
+     (still required by the admin endpoints even though they no-op writes on free tier)
+   - `CORS_ORIGIN` — your frontend origin, or `*` to allow all
+6. Wait for deploy (~2 min). Visit `https://YOUR-SERVICE.onrender.com/api/health`
+   — should show your committed chunk count.
+7. In the React app set `VITE_API_BASE=https://YOUR-SERVICE.onrender.com` and
+   redeploy. The chat widget and `/ask` page start answering.
+
+> ℹ️ Free-tier limits: the service sleeps after 15 min of inactivity and
+> cold-starts in ~30 s. Uploading via `/admin` succeeds but the files **won't
+> persist across restarts** — that's why we ingest locally and commit
+> `vectors.json`. If you outgrow the free tier, switch `plan: free` →
+> `plan: starter` in `render.yaml` and add a `disk:` block (see git history).
 
 ## Environment variables
 

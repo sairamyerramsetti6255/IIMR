@@ -1,26 +1,27 @@
-# Render Blueprint — deploy with: New + → Blueprint → point to this repo.
+# Render Blueprint — free tier deploy. No persistent disk needed because the
+# vector index is pre-built locally (npm run ingest:local) and committed to
+# the repo at backend/data/vectors.json. The server loads it on boot.
+#
 # Docs: https://render.com/docs/blueprint-spec
 services:
   - type: web
     name: millet-vista-rag
     env: node
-    plan: starter
+    plan: free
     rootDir: backend
     buildCommand: npm install
     startCommand: npm start
     healthCheckPath: /api/health
     autoDeploy: true
-    disk:
-      name: rag-data
-      mountPath: /var/data
-      sizeGB: 1
     envVars:
       - key: NODE_ENV
         value: production
       - key: PORT
-        value: 8080
+        value: 10000
+      # On the free tier we can't persist new uploads, so we point DATA_DIR
+      # at the in-repo `data` folder. The pre-built vectors.json lives here.
       - key: DATA_DIR
-        value: /var/data
+        value: ./data
       - key: GEMINI_CHAT_MODEL
         value: gemini-1.5-flash
       - key: GEMINI_EMBED_MODEL
@@ -34,6 +35,6 @@ services:
       - key: GEMINI_API_KEY
         sync: false   # paste in the dashboard
       - key: ADMIN_TOKEN
-        sync: false   # paste in the dashboard
+        sync: false   # paste in the dashboard (still required by the API)
       - key: CORS_ORIGIN
         sync: false
