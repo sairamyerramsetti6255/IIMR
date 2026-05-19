@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Millet Vista RAG API</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/styles.css" />
+</head>
+<body>
+  <div class="admin">
+    <div class="eyebrow" style="margin-bottom:12px">Millet Vista · RAG API</div>
+    <h1>Knowledge backend</h1>
+    <p class="sub">This service powers the AI chatbot inside your Millet Vista website. It receives PDF uploads, embeds them with Gemini and answers questions on demand.</p>
+
+    <div class="card">
+      <div class="card-title">Endpoints</div>
+      <div class="doctable" style="font-family:'JetBrains Mono', monospace; font-size:12.5px">
+        <div><b>GET /api/health</b> &nbsp;— service status, embedded chunk count, configured models</div>
+        <div style="margin-top:6px"><b>GET /api/documents</b> &nbsp;— list ingested PDFs (public)</div>
+        <div style="margin-top:6px"><b>POST /api/upload</b> &nbsp;— upload PDFs (multipart <code>files</code>) — admin only</div>
+        <div style="margin-top:6px"><b>DELETE /api/documents/:id</b> &nbsp;— remove a doc — admin only</div>
+        <div style="margin-top:6px"><b>POST /api/chat</b> &nbsp;— streamed RAG answer (SSE)</div>
+        <div style="margin-top:6px"><b>POST /api/chat/sync</b> &nbsp;— non-streaming variant</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Admin</div>
+      <p style="font-size:13.5px;color:var(--stone-700);margin:0 0 14px">Upload, list and remove the PDFs that the AI uses as its source of truth.</p>
+      <a class="btn primary" href="/admin">Open the admin upload page →</a>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Status</div>
+      <pre id="status" style="font-family:'JetBrains Mono',monospace;font-size:12px;background:var(--paper-50);padding:12px;border-radius:10px;margin:0;white-space:pre-wrap">loading…</pre>
+    </div>
+  </div>
+  <script>
+    fetch('/api/health').then(r => r.json()).then(d => {
+      document.getElementById('status').textContent = JSON.stringify(d, null, 2)
+    }).catch(e => {
+      document.getElementById('status').textContent = 'failed to load: ' + e
+    })
+  </script>
+</body>
+</html>

@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Millet Vista RAG · Admin</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/styles.css" />
+</head>
+<body>
+  <div class="admin">
+    <div class="eyebrow" style="margin-bottom:12px">Millet Vista · Admin</div>
+    <h1>PDF knowledge base</h1>
+    <p class="sub">Drop ICAR / IIMR / FSSAI PDFs here. They’re extracted, chunked, embedded with Gemini, and made searchable by the chatbot.</p>
+
+    <div class="card" id="auth-card">
+      <div class="card-title">Step 1 — paste admin token</div>
+      <label for="token">ADMIN_TOKEN (set on Render)</label>
+      <input id="token" class="field" type="password" autocomplete="off" placeholder="paste your long random secret…" />
+      <div class="row" style="margin-top:12px">
+        <button class="btn primary" id="save-token">Unlock</button>
+        <span id="auth-msg" style="font-size:12.5px;color:var(--stone-600)"></span>
+      </div>
+    </div>
+
+    <div class="card" id="upload-card" style="display:none">
+      <div class="card-title">Step 2 — upload PDFs</div>
+      <label class="dropzone" id="drop">
+        <div class="big">Drop PDFs here</div>
+        <div class="small">or click to choose · max 25 MB per file · 10 files at a time</div>
+        <input type="file" accept="application/pdf,.pdf" multiple id="picker" />
+      </label>
+      <ul class="uploadlist" id="ul"></ul>
+    </div>
+
+    <div class="card" id="docs-card" style="display:none">
+      <div class="card-title">Indexed documents <span id="doc-count" style="color:var(--stone-500);font-weight:400">(0)</span></div>
+      <table class="doctable">
+        <thead>
+          <tr><th>Name</th><th>Pages</th><th>Chunks</th><th>Size</th><th>Added</th><th></th></tr>
+        </thead>
+        <tbody id="doc-body"><tr><td colspan="6" style="color:var(--stone-500);padding:14px 8px">No documents yet.</td></tr></tbody>
+      </table>
+    </div>
+  </div>
+
+  <div id="toast-host"></div>
+  <script type="module" src="/admin.js"></script>
+</body>
+</html>

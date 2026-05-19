@@ -1,0 +1,73 @@
+// Comparative nutrition - per 100 g edible portion.
+// Source: ICAR-IIMR Nutritional & Health Benefits of Millets (2017) + Nutri Cereals (2018).
+
+export const nutritionTable = {
+  columns: [
+    { key: 'crop', label: 'Crop' },
+    { key: 'energy', label: 'Energy', unit: 'kcal' },
+    { key: 'protein', label: 'Protein', unit: 'g' },
+    { key: 'fat', label: 'Fat', unit: 'g' },
+    { key: 'carbs', label: 'Carbs', unit: 'g' },
+    { key: 'fiber', label: 'Total fibre', unit: 'g' },
+    { key: 'ca', label: 'Calcium', unit: 'mg' },
+    { key: 'fe', label: 'Iron', unit: 'mg' },
+    { key: 'zn', label: 'Zinc', unit: 'mg' },
+    { key: 'mg', label: 'Magnesium', unit: 'mg' },
+  ],
+  rows: [
+    { crop: 'Sorghum', kind: 'millet', energy: 334, protein: 9.97, fat: 1.73, carbs: 67.7, fiber: 10.22, ca: 27.6, fe: 3.95, zn: 1.86, mg: 133 },
+    { crop: 'Pearl Millet', kind: 'millet', energy: 348, protein: 10.96, fat: 5.43, carbs: 61.78, fiber: 11.49, ca: 27.35, fe: 6.42, zn: 2.76, mg: 124 },
+    { crop: 'Finger Millet', kind: 'millet', energy: 320, protein: 7.16, fat: 1.92, carbs: 66.82, fiber: 11.18, ca: 364, fe: 4.62, zn: 2.53, mg: 146 },
+    { crop: 'Foxtail Millet', kind: 'millet', energy: 331, protein: 12.30, fat: 4.30, carbs: 60.09, fiber: 14.06, ca: 31, fe: 2.85, zn: 2.40, mg: 81 },
+    { crop: 'Kodo Millet', kind: 'millet', energy: 331, protein: 8.92, fat: 2.55, carbs: 66.19, fiber: 6.39, ca: 15.27, fe: 2.34, zn: 0.32, mg: 122 },
+    { crop: 'Little Millet', kind: 'millet', energy: 346, protein: 8.92, fat: 2.55, carbs: 65.55, fiber: 7.72, ca: 16.06, fe: 1.26, zn: 1.82, mg: 91 },
+    { crop: 'Barnyard Millet', kind: 'millet', energy: 307, protein: 11.20, fat: 4.20, carbs: 55.04, fiber: 12.62, ca: 21, fe: 5.30, zn: 3.00, mg: 96 },
+    { crop: 'Proso Millet', kind: 'millet', energy: 341, protein: 12.50, fat: 1.10, carbs: 70.40, fiber: 7.70, ca: 14, fe: 0.80, zn: 1.40, mg: 153 },
+    { crop: 'Rice (milled)', kind: 'cereal', energy: 356, protein: 7.94, fat: 0.52, carbs: 78.24, fiber: 2.81, ca: 7.49, fe: 0.65, zn: 1.21, mg: 19 },
+    { crop: 'Wheat (whole)', kind: 'cereal', energy: 321, protein: 10.57, fat: 1.47, carbs: 64.72, fiber: 11.23, ca: 30.94, fe: 3.97, zn: 2.85, mg: 125 },
+    { crop: 'Maize (yellow)', kind: 'cereal', energy: 334, protein: 8.80, fat: 3.77, carbs: 64.77, fiber: 12.24, ca: 8.94, fe: 2.49, zn: 2.69, mg: 121 },
+  ],
+}
+
+export const healthBenefits = [
+  { id: 'diabetes', title: 'Type-2 Diabetes', icon: 'pulse',
+    summary: 'Millets release glucose steadily — measured GI 50–68 vs 73 for rice — and lower glycosylated haemoglobin (HbA1c) in clinical trials.',
+    evidence: 'NIN-IIMR diabetes intervention: HbA1c reduction and lipid-profile improvement in T2D patients on a 90-day sorghum diet.' },
+  { id: 'cvd', title: 'Cardiovascular Disease', icon: 'heart',
+    summary: 'Soluble + insoluble fibre, Mg, plant sterols and antioxidants lower LDL and blood pressure.',
+    evidence: 'Magnesium 81–153 mg / 100 g supports vascular relaxation; β-glucan + lignans reduce arterial stiffness.' },
+  { id: 'celiac', title: 'Celiac & Gluten Sensitivity', icon: 'wheat-off',
+    summary: 'All 9 millets are naturally gluten-free — safe for celiac patients and gluten-sensitive consumers.',
+    evidence: 'Low prolamine fraction; pearl millet uniquely retains alkalinity post-cooking, easing gut comfort.' },
+  { id: 'obesity', title: 'Obesity & Weight', icon: 'scale',
+    summary: 'Slow-digesting starch + 7–14% fibre extends satiety and supports calorie control.',
+    evidence: 'Resistant starch + non-starch polysaccharides reduce post-prandial spike vs refined grains.' },
+  { id: 'anemia', title: 'Anaemia (Fe deficiency)', icon: 'droplet',
+    summary: 'Iron-dense pearl millet (Dhanshakti: ~71 ppm Fe) and biofortified finger millet help correct deficiency.',
+    evidence: 'Bioavailability rises with dehulling, malting and fermentation; phytate reduction is key.' },
+  { id: 'gut', title: 'Gut Health', icon: 'leaf',
+    summary: 'Insoluble fibre supports regular bowel function; resistant starch feeds beneficial colonic microbiota.',
+    evidence: 'Daily 30–50 g millet contributes ~3–6 g additional fibre over refined cereals.' },
+  { id: 'cancer', title: 'Chemoprevention', icon: 'shield',
+    summary: 'Polyphenols, lignans, phytates and phytosterols in millets demonstrate anti-proliferative effects in vitro.',
+    evidence: 'Sorghum 3-deoxyanthocyanins and finger-millet polyphenols show strong DPPH scavenging activity.' },
+  { id: 'thyroid', title: 'Detoxification & Antioxidants', icon: 'sparkles',
+    summary: 'Phenolic acids, flavonoids and avenanthramide-class compounds neutralise reactive oxygen species.',
+    evidence: 'Total phenolic content highest in finger and foxtail millets among Indian millets.' },
+  { id: 'children', title: 'Child Nutrition', icon: 'baby',
+    summary: 'Finger millet at 344 mg Ca/100 g and ragi malt is a cornerstone of weaning food in India.',
+    evidence: 'NIN study: improved nutritional status (height, weight, MUAC) in school-children supplemented with sorghum foods.' },
+  { id: 'climate', title: 'Climate Resilience',  icon: 'sun',
+    summary: 'C4 photosynthesis + low water demand (300–500 mm) make millets the most climate-smart grain choice.',
+    evidence: '70% less water than rice; tolerates 40°+ heat and degraded soils.' },
+]
+
+export const giData = [
+  { crop: 'Rice (white)', gi: 73, gl: 26.5, tone: 'high' },
+  { crop: 'Wheat roti', gi: 62, gl: 18.0, tone: 'high' },
+  { crop: 'Sorghum roti', gi: 55, gl: 16.0, tone: 'low' },
+  { crop: 'Pearl millet roti', gi: 54, gl: 14.5, tone: 'low' },
+  { crop: 'Finger millet mudde', gi: 50, gl: 12.0, tone: 'low' },
+  { crop: 'Foxtail millet rice', gi: 50, gl: 13.0, tone: 'low' },
+  { crop: 'Little millet upma', gi: 52, gl: 12.5, tone: 'low' },
+]

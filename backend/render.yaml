@@ -1,0 +1,39 @@
+# Render Blueprint — deploy with: New + → Blueprint → point to this repo.
+# Docs: https://render.com/docs/blueprint-spec
+services:
+  - type: web
+    name: millet-vista-rag
+    env: node
+    plan: starter
+    rootDir: backend
+    buildCommand: npm install
+    startCommand: npm start
+    healthCheckPath: /api/health
+    autoDeploy: true
+    disk:
+      name: rag-data
+      mountPath: /var/data
+      sizeGB: 1
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 8080
+      - key: DATA_DIR
+        value: /var/data
+      - key: GEMINI_CHAT_MODEL
+        value: gemini-1.5-flash
+      - key: GEMINI_EMBED_MODEL
+        value: text-embedding-004
+      - key: TOP_K
+        value: "6"
+      - key: CHUNK_SIZE
+        value: "1100"
+      - key: CHUNK_OVERLAP
+        value: "180"
+      - key: GEMINI_API_KEY
+        sync: false   # paste in the dashboard
+      - key: ADMIN_TOKEN
+        sync: false   # paste in the dashboard
+      - key: CORS_ORIGIN
+        sync: false

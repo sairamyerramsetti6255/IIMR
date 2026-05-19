@@ -1,0 +1,18 @@
+node_modules/
+.env
+.env.local
+.env.*.local
+
+# Local persisted data (PDFs + vector index). On Render this lives on a disk.
+data/
+!data/.gitkeep
+
+# Logs
+*.log
+npm-debug.log*
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
